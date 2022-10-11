@@ -11,10 +11,28 @@ public class CovidInfo {
 	public String getSafetyLevel() {
 		return region;
 	}
-	public void setID() {
-		
+	public void setID(int i) {
+		region_id = i;
 	}
-	public void setRegion(){
-		
+	public void setRegion(String n){
+		region = n;
+	}
+	public void setCases(int n) {
+		cases = n;
+	}
+	public void setDeaths(int n) {
+		deaths = n;
+	}
+	public int getCases() {
+		return cases;
+	}
+	public int getRegionID() {
+		return region_id;	
+	}
+	public int getDeaths() {
+		return deaths;
+	}
+	public String getRegion() {
+		return region;
 	}
 }
