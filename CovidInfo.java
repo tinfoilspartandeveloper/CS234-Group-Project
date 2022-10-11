@@ -6,11 +6,25 @@ public class CovidInfo {
 	private String region;
 	private int currYear;
 	
-	
-
-	public String getSafetyLevel() {
-		return region;
+	public CovidInfo(){
+		
 	}
+	
+	String getSafetyLevel() {
+		if(cases < 10) {
+			return "Green";
+		}else if(cases < 50) {
+			return "Yellow";
+		}else if(cases < 100) {
+			return "Orange";
+		}else if(cases < 200) {
+			return "Deep Orange";
+		}else {
+			return "Red";
+		}
+	}
+	
+	//getters and setters
 	public void setID(int i) {
 		region_id = i;
 	}
