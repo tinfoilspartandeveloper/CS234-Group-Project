@@ -6,6 +6,10 @@ public class CovidInfo {
 	private String region;
 	private int currYear;
 	
+	public CovidInfo() {
+		
+	}
+	
 	public CovidInfo(int r, int c, int d, String reg){
 		region_id = r;
 		cases = c;
