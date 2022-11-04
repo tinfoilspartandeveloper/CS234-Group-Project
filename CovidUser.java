@@ -12,6 +12,9 @@ public class CovidUser {
 		}
 		return null;
 	}
+	CovidInfo findRegion(int id) {
+		return covid_areas.get(id);
+	}
 	void printRegion(String in) {
 		CovidInfo too = findRegion(in);
 		System.out.println("-----------------------------------------");
@@ -54,6 +57,7 @@ public class CovidUser {
 				info.setCases(in.nextInt());
 				System.out.print("Input region deaths: ");
 				info.setDeaths(in.nextInt());
+				info.setID(user.covid_areas.size());
 				user.covid_areas.add(info);
 				break;
 			case 1:
