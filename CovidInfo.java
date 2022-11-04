@@ -4,7 +4,6 @@ public class CovidInfo {
 	private int cases;
 	private int deaths;
 	private String region;
-	private int currYear;
 	
 	public CovidInfo() {
 		

@@ -12,6 +12,30 @@ public class CovidUser {
 		}
 		return null;
 	}
+	void printRegion(String in) {
+		CovidInfo too = findRegion(in);
+		System.out.println("-----------------------------------------");
+		System.out.println("Current region:" + too.getRegion());
+		System.out.println("Current cases:" + too.getCases());
+		System.out.println("Current deaths:" + too.getDeaths());
+		System.out.println("Current safety level: " + too.getSafetyLevel());
+		System.out.println("-----------------------------------------");
+	}
+	void printRegion(int index) {
+		CovidInfo too = covid_areas.get(index);
+		System.out.println("-----------------------------------------");
+		System.out.println("Current region:" + too.getRegion());
+		System.out.println("Current cases:" + too.getCases());
+		System.out.println("Current deaths:" + too.getDeaths());
+		System.out.println("Current safety level: " + too.getSafetyLevel());
+		System.out.println("-----------------------------------------");
+	}
+	void printAllRegions() {
+		for(int i = 0; i < covid_areas.size(); i++) {
+			printRegion(i);
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		Scanner in = new Scanner (System.in);
@@ -19,7 +43,7 @@ public class CovidUser {
 		//Updated upstream
 		boolean end = false;
 		while(!end) {
-			System.out.println("Input choices: 0, new region; 1, edit region cases; 2, edit region deaths; 3, output region info;-1, exit program");
+			System.out.println("Input choices: 0, new region; 1, edit region cases; 2, edit region deaths; 3, output region info; 4, output all regions info; -1, exit program");
 			System.out.print("Input your next choice for input: ");
 			switch(in.nextInt()) {
 			case 0:
@@ -50,13 +74,11 @@ public class CovidUser {
 				break;
 			case 3:
 				System.out.print("Input region name: ");
-				CovidInfo too = user.findRegion(in.next());
-				System.out.println("-----------------------------------------");
-				System.out.println("Current region:" + too.getRegion());
-				System.out.println("Current cases:" + too.getCases());
-				System.out.println("Current deaths:" + too.getDeaths());
-				System.out.println("Current safety level: " + too.getSafetyLevel());
-				System.out.println("-----------------------------------------");
+				user.printRegion(in.next());
+				break;
+			case 4:
+				System.out.println("Printing all regions");
+				user.printAllRegions();
 				break;
 			case -1:
 				end = true;
