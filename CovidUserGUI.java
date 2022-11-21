@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 public class CovidUserGUI extends JFrame implements ActionListener {
 	private JComboBox regionlist;
 	private JButton displayButton;
+	private JButton editButton;
 	private JButton regionButton;
 	private JTextArea txtReport;
 	public ArrayList<CovidInfo> covid_areas = new ArrayList<CovidInfo>();
@@ -37,7 +38,7 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		//String[] region = {"World","US","WSU"};
 		regionlist = new JComboBox();
 		regionButton = new JButton();
-	
+		editButton = new JButton("Edit Region");
 		
 		displayButton = new JButton("Display Region");
 		regionButton = new JButton("New Region"); 
@@ -47,6 +48,7 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		
 		add(regionlist);
 		add(displayButton);
+		add(editButton);
 		add(regionButton);
 		add(txtReport);
 		
@@ -55,7 +57,7 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		txtReport.setEditable(false);
 		regionButton.addActionListener(this);
 		displayButton.addActionListener(this);
-
+		editButton.addActionListener(this);
 	}
 	
 	public static void main(String[] args) {
@@ -97,7 +99,25 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 			txtReport.append("Current deaths:" + too.getDeaths() + "\n");
 			if(str.equals("WSU")) {
 				txtReport.append("Current safety level: " + too.getSafetyLevel() + "\n");
+				}
 			}
+		}else if(e.getSource() == editButton) {
+			if(regionlist.getItemCount() > 0) {
+				String str = regionlist.getSelectedItem().toString();
+				CovidInfo too = findRegion(str);
+				JTextField region_cases = new JTextField(5);
+				JTextField region_deaths = new JTextField(5);
+				JPanel panel = new JPanel();
+				panel.add(new JLabel("Region Cases: "));
+				panel.add(region_cases);
+				panel.add(new JLabel("Region Deaths: "));
+				panel.add(region_deaths);
+				
+				int result = JOptionPane.showConfirmDialog(null, panel, "Enter region info for " + str, JOptionPane.OK_CANCEL_OPTION);
+				if(result == JOptionPane.OK_OPTION) {
+					too.setCases(Integer.parseInt(region_cases.getText()));
+					too.setDeaths(Integer.parseInt(region_deaths.getText()));
+				}
 			}
 		}
 	}
