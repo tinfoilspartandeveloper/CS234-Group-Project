@@ -52,6 +52,7 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		
 		setVisible(true);
 		
+		txtReport.setEditable(false);
 		regionButton.addActionListener(this);
 		displayButton.addActionListener(this);
 
@@ -94,7 +95,9 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 			txtReport.append("Current region:" + too.getRegion() + "\n");
 			txtReport.append("Current cases:" + too.getCases() + "\n");
 			txtReport.append("Current deaths:" + too.getDeaths() + "\n");
-			txtReport.append("Current safety level: " + too.getSafetyLevel() + "\n");
+			if(str.equals("WSU")) {
+				txtReport.append("Current safety level: " + too.getSafetyLevel() + "\n");
+			}
 			}
 		}
 	}
