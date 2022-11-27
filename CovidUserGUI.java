@@ -1,6 +1,10 @@
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -28,7 +32,52 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		}
 		return null;
 	}
-	
+	void saveData() throws IOException {
+		FileWriter write = new FileWriter("src/save", false);
+		write.close();
+		write = new FileWriter("src/save");
+		for(int i = 0; i < covid_areas.size(); i++) {
+			write.write(covid_areas.get(i).getRegion() + " " + covid_areas.get(i).getCases() + " " + covid_areas.get(i).getDeaths() + " " + covid_areas.get(i).getTime().toString() + "\n");
+		}
+		write.close();
+	}
+	void loadData() throws IOException{
+		FileReader obj =  new FileReader("src/save");
+		BufferedReader instream = new BufferedReader(obj);
+		boolean exitf = false;
+		while(!exitf) {
+			String out = instream.readLine();
+			CovidInfo in = new CovidInfo();
+			if(out == null) {
+				exitf = true;
+			}else {
+				String t = "";
+				int i;
+				for(i = 0; out.charAt(i) != ' ' && i < out.length(); i++) {
+					t = t + out.charAt(i);
+				}
+				in.setRegion(t);
+				t = "";
+				for(i = i+1; out.charAt(i) != ' ' && i < out.length(); i++) {
+					t = t + out.charAt(i);
+				}
+				in.setCases(Integer.parseInt(t));
+				t = "";
+				for(i = i+1; out.charAt(i) != ' ' && i < out.length(); i++) {
+					t = t + out.charAt(i);
+				}
+				in.setDeaths(Integer.parseInt(t));
+				t = "";
+				for(i = i+1; i < out.length(); i++) {
+					t = t + out.charAt(i);
+				}
+				in.setTime(java.time.LocalDate.parse(t));
+				covid_areas.add(in);
+				regionlist.addItem(in.getRegion());
+			}
+		}
+		
+	}
 	CovidUserGUI(){
 		setTitle ("Covid Information");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -58,6 +107,12 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		regionButton.addActionListener(this);
 		displayButton.addActionListener(this);
 		editButton.addActionListener(this);
+		try {
+			this.loadData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -85,15 +140,21 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 			if(result == JOptionPane.OK_OPTION) {
 				CovidInfo inf = new CovidInfo(covid_areas.size(), Integer.parseInt(region_cases.getText()), Integer.parseInt(region_deaths.getText()), region_in.getText());
 				covid_areas.add(inf);
+				regionlist.addItem(region_in.getText());
+				try {
+					this.saveData();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
-			
-			regionlist.addItem(region_in.getText());
 		}else if(e.getSource() == displayButton) {
 			//regionlist.getSelectedItem();
 			if(regionlist.getItemCount() > 0) {
 			String str = regionlist.getSelectedItem().toString();
 			CovidInfo too = findRegion(str);
 			txtReport.setText("");
+			txtReport.append("Time of data: " + too.getTime().toString() + "\n");
 			txtReport.append("Current region:" + too.getRegion() + "\n");
 			txtReport.append("Current cases:" + too.getCases() + "\n");
 			txtReport.append("Current deaths:" + too.getDeaths() + "\n");
@@ -117,6 +178,13 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 				if(result == JOptionPane.OK_OPTION) {
 					too.setCases(Integer.parseInt(region_cases.getText()));
 					too.setDeaths(Integer.parseInt(region_deaths.getText()));
+					too.updateTime();
+					try {
+						this.saveData();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		}

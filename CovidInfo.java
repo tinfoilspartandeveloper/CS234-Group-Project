@@ -4,7 +4,7 @@ public class CovidInfo {
 	private int cases;
 	private int deaths;
 	private String region;
-	
+	private java.time.LocalDate time;
 	public CovidInfo() {
 		
 	}
@@ -14,6 +14,7 @@ public class CovidInfo {
 		cases = c;
 		deaths = d;
 		region = reg;
+		time = java.time.LocalDate.now();
 	}
 	
 	String getSafetyLevel() {
@@ -43,6 +44,12 @@ public class CovidInfo {
 	public void setDeaths(int n) {
 		deaths = n;
 	}
+	public void setTime(java.time.LocalDate t) {
+		time = t;
+	}
+	public void updateTime() {
+		time = java.time.LocalDate.now();
+	}
 	public int getCases() {
 		return cases;
 	}
@@ -54,5 +61,8 @@ public class CovidInfo {
 	}
 	public String getRegion() {
 		return region;
+	}
+	public java.time.LocalDate getTime() {
+		return time;
 	}
 }
