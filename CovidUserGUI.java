@@ -21,6 +21,7 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 	private JButton displayButton;
 	private JButton editButton;
 	private JButton regionButton;
+	private JButton deleteButton;
 	private JTextArea txtReport;
 	public ArrayList<CovidInfo> covid_areas = new ArrayList<CovidInfo>();
 	
@@ -31,6 +32,14 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 			}
 		}
 		return null;
+	}
+	int findIndex(String in) {
+		for(int i = 0; i < covid_areas.size(); i++) {
+			if(covid_areas.get(i).getRegion().equals(in)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	void saveData() throws IOException {
 		FileWriter write = new FileWriter("src/save", false);
@@ -92,13 +101,14 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		displayButton = new JButton("Display Region");
 		regionButton = new JButton("New Region"); 
 		txtReport = new JTextArea(7,25);
-		
+		deleteButton = new JButton("Delete Region");
 		
 		
 		add(regionlist);
 		add(displayButton);
 		add(editButton);
 		add(regionButton);
+		add(deleteButton);
 		add(txtReport);
 		
 		setVisible(true);
@@ -107,6 +117,7 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 		regionButton.addActionListener(this);
 		displayButton.addActionListener(this);
 		editButton.addActionListener(this);
+		deleteButton.addActionListener(this);
 		try {
 			this.loadData();
 		} catch (IOException e) {
@@ -186,6 +197,12 @@ public class CovidUserGUI extends JFrame implements ActionListener {
 						e1.printStackTrace();
 					}
 				}
+			}
+		}else if(e.getSource() == deleteButton) {
+			int index = this.findIndex(regionlist.getSelectedItem().toString());
+			if(index != -1) {
+				covid_areas.remove(index);
+				regionlist.removeItem(regionlist.getSelectedItem());
 			}
 		}
 	}
